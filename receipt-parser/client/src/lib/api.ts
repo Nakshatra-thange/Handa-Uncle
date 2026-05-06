@@ -19,6 +19,7 @@ export interface ParsedReceipt {
   date: string | null;
   line_items: LineItem[];
   subtotal: number | null;
+  discount: number | null;
   tax: number | null;
   tip: number | null;
   total: number | null;

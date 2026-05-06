@@ -119,7 +119,7 @@ export function EditPage() {
       <div className="edit-main">
         <div className="edit-layout">
 
-          {/* Left: image */}
+          
           <div className="edit-image-col">
             <div className="receipt-image-wrap">
               <div className="corner-bl" /><div className="corner-br" />
@@ -174,6 +174,20 @@ export function EditPage() {
                   {current.subtotal !== null ? fmtCurrency(String(current.subtotal)) : "—"}
                 </span>
               </div>
+              <div className="field-divider" />
+              <InlineField
+                label="Discount"
+                value={current.discount !== null ? String(current.discount) : ""}
+                inputType="number"
+                format={(v) => {
+                  if (!v) return "—";
+                  const n = parseFloat(v);
+                  if (isNaN(n)) return v;
+                  return `-${n.toLocaleString("en-IN", { style: "currency", currency: "INR", minimumFractionDigits: 2 })}`;
+                }}
+                onChange={(v) => patch("discount", v ? parseFloat(v) : null)}
+                placeholder="No discount"
+              />
               <div className="meta-row">
                 <span className="field-label">Tax</span>
                 <span className="field-value field-value--meta">
@@ -197,7 +211,13 @@ export function EditPage() {
               onChange={(items) => patch("line_items", items)}
             />
 
-            <ReconciliationBar items={current.line_items} total={current.total} />
+            <ReconciliationBar
+              items={current.line_items}
+              discount={current.discount}
+              tax={current.tax}
+              tip={current.tip}
+              total={current.total}
+            />
 
            
             <div className="raw-toggle">
