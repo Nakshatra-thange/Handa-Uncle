@@ -106,4 +106,3 @@ export function listReceipts(): ReceiptListItem[] {
 }
 
 export { UPLOADS_PATH };
-export default db;
