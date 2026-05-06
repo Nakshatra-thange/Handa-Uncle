@@ -2,7 +2,6 @@ import { LLMReceiptSchema, ParsedReceiptSchema } from "../schemas/reciept";
 import type { LLMReceipt, ParsedReceipt, ReceiptFlags } from "../schemas/reciept";
 import { PROMPT } from "./prompt";
 
-// OpenRouter — OpenAI-compatible API, no SDK needed
 const MODEL = "baidu/qianfan-ocr-fast:free";
 
 function getOpenRouterKey(): string {
@@ -13,7 +12,6 @@ function getOpenRouterKey(): string {
   return key;
 }
 
-// ─── Stage 1: Send image to OpenRouter, get raw text back ────────────────────
 
 async function extractReceiptFromImage(imageBase64: string, mimeType: string): Promise<string> {
   const OPENROUTER_API_KEY = getOpenRouterKey();
@@ -67,7 +65,6 @@ async function extractReceiptFromImage(imageBase64: string, mimeType: string): P
   return text;
 }
 
-// ─── Stage 2: Minimal JSON sanitation (not repair — sanitation) ──────────────
 
 function sanitizeJson(raw: string): unknown {
   let text = raw.trim();
@@ -81,7 +78,6 @@ function sanitizeJson(raw: string): unknown {
   return JSON.parse(text);
 }
 
-// ─── Stage 3: Validate against Zod schema ───────────────────────────────────
 
 function validateReceipt(raw: unknown): { data: LLMReceipt | null; parse_warning: boolean } {
   const result = LLMReceiptSchema.safeParse(raw);
@@ -115,7 +111,6 @@ function validateReceipt(raw: unknown): { data: LLMReceipt | null; parse_warning
   return { data: fallback, parse_warning: true };
 }
 
-// ─── Stage 4: Derive review flags from heuristics ───────────────────────────
 
 function deriveWarnings(data: LLMReceipt): ReceiptFlags {
   const flags: ReceiptFlags = {};
@@ -140,7 +135,6 @@ function deriveWarnings(data: LLMReceipt): ReceiptFlags {
   return flags;
 }
 
-// ─── Public entrypoint ───────────────────────────────────────────────────────
 
 export async function parseReceiptImage(
   imageBase64: string,

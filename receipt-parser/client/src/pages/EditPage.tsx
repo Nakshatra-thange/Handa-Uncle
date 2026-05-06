@@ -13,23 +13,23 @@ type SaveState = "idle" | "saving" | "saved" | "error";
 export function EditPage() {
   const { id } = useParams<{ id: string }>();
   const location = useLocation();
-  const navigate = useNavigate();
+ 
 
-  // Receipt passed via navigation state (fresh parse) or fetched from DB (re-open)
+
   const [receipt, setReceipt] = useState<ParsedReceipt | null>(
     (location.state as any)?.receipt ?? null
   );
   const [loading, setLoading] = useState(!receipt);
   const [fetchError, setFetchError] = useState<string | null>(null);
 
-  // Two-state dirty check: original is what came from server, current is editable
+
   const [original, setOriginal] = useState<ParsedReceipt | null>(receipt);
   const [current, setCurrent] = useState<ParsedReceipt | null>(receipt);
 
   const [saveState, setSaveState] = useState<SaveState>("idle");
   const [showRaw, setShowRaw] = useState(false);
 
-  // Fetch if not passed via state (e.g. direct URL or page refresh)
+ 
   useEffect(() => {
     if (receipt) return;
     if (!id) return;
@@ -44,7 +44,7 @@ export function EditPage() {
       .finally(() => setLoading(false));
   }, [id]);
 
-  // On fresh parse arrival via state, sync all three
+
   useEffect(() => {
     const r = (location.state as any)?.receipt;
     if (r) {
@@ -59,7 +59,7 @@ export function EditPage() {
     return JSON.stringify(current) !== JSON.stringify(original);
   }, [current, original]);
 
-  // Derive which field to auto-focus (first flagged field)
+
   const firstFlag = useMemo(() => {
     if (!current) return null;
     const { flags } = current;
@@ -132,7 +132,7 @@ export function EditPage() {
             <p className="image-tag">// IMG_{current.id} · SOURCE</p>
           </div>
 
-          {/* Right: fields */}
+          
           <div className="edit-fields-col">
             <ParseWarningBanner visible={current.parse_warning} />
 
@@ -199,7 +199,7 @@ export function EditPage() {
 
             <ReconciliationBar items={current.line_items} total={current.total} />
 
-            {/* Raw LLM output toggle */}
+           
             <div className="raw-toggle">
               <button
                 className="raw-toggle-btn"
