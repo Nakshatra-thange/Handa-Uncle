@@ -1,8 +1,8 @@
 import { Hono } from "hono";
 import path from "path";
 import fs from "fs/promises";
-import { parseReceiptImage } from "../services/parseReceipt.ts";
-import { insertReceipt, UPLOADS_PATH } from "../db/database.ts";
+import { parseReceiptImage } from "../services/parseReceipt";
+import { insertReceipt, UPLOADS_PATH } from "../db/database";
 
 const parseRoute = new Hono();
 
