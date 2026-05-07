@@ -10,7 +10,6 @@ const app = new Hono();
 
 app.use("*", cors({ origin: "http://localhost:5173" }));
 
-// Serve uploaded images as static files
 app.use("/uploads/*", serveStatic({ root: "./" }));
 
 app.route("/parse", parseRoute);

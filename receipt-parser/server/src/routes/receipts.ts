@@ -7,13 +7,11 @@ import {
 
 const receiptsRoute = new Hono();
 
-// GET /receipts — list all saved receipts (summary view)
 receiptsRoute.get("/", (c) => {
   const receipts = listReceipts();
   return c.json(receipts);
 });
 
-// GET /receipts/:id — full receipt data for edit view
 receiptsRoute.get("/:id", (c) => {
   const id = Number(c.req.param("id"));
 
@@ -27,7 +25,7 @@ receiptsRoute.get("/:id", (c) => {
     return c.json({ error: "Receipt not found" }, 404);
   }
 
-  // Return corrected data if it exists, otherwise parsed
+
   const data = row.corrected_json
     ? JSON.parse(row.corrected_json)
     : JSON.parse(row.parsed_json);
@@ -41,7 +39,6 @@ receiptsRoute.get("/:id", (c) => {
   });
 });
 
-// POST /receipts/:id — save corrected receipt data
 receiptsRoute.post("/:id", async (c) => {
   const id = Number(c.req.param("id"));
 
